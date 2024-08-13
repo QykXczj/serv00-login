@@ -112,6 +112,9 @@ async def main():
     print(f'所有{serviceName}账号登录完成！')
     # await send_telegram_message(message)
     # print(f'所有{serviceName}账号登录完成！')
+    # 确保所有异步操作完成
+    await asyncio.sleep(0)  # 这一步很重要，确保所有异步操作完成
+
 
 async def send_telegram_message(message):
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
