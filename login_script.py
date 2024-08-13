@@ -78,6 +78,8 @@ async def main():
         print(f'读取 accounts.json 文件时出错: {e}')
         return
 
+    messages = []  # 用于存储分组后的消息
+
     for account in accounts:
         username = account['username']
         password = account['password']
@@ -99,9 +101,17 @@ async def main():
         delay = random.randint(1000, 8000)
         await delay_time(delay)
         
-    message += f'所有{serviceName}账号登录完成！'
-    await send_telegram_message(message)
+    # message += f'所有{serviceName}账号登录完成！'
+    # 分割消息为每20个账号一组
+    messages = [message[i:i + 20 * len(success_message)] for i in range(0, len(message), 20 * len(success_message))]
+
+    # 发送每组消息
+    for msg in messages:
+        await send_telegram_message(msg)
+
     print(f'所有{serviceName}账号登录完成！')
+    # await send_telegram_message(message)
+    # print(f'所有{serviceName}账号登录完成！')
 
 async def send_telegram_message(message):
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
