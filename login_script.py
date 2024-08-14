@@ -108,6 +108,7 @@ async def main():
     # 发送每组消息
     for msg in messages:
         await send_telegram_message(msg)
+        await send_VX_Bot_message(msg)
 
     print(f'所有{serviceName}账号登录完成！')
     # await send_telegram_message(message)
@@ -141,6 +142,24 @@ async def send_telegram_message(message):
             print(f"发送消息到Telegram失败: {response.text}")
     except Exception as e:
         print(f"发送消息到Telegram时出错: {e}")
+        
+async def send_VX_Bot_message(message):
+    url = f"https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key={VX_BOT_KEY}"
+    payload = {
+        "msgtype": "text",
+        "text": {
+            "content": message
+        }
+    }
+    headers = {
+        'Content-Type': 'application/json'
+    }
+    try:
+        response = requests.post(url, json=payload, headers=headers)
+        if response.status_code != 200:
+            print(f"发送消息到VX_BOT失败: {response.text}")
+    except Exception as e:
+        print(f"发送消息到VX_Bot时出错: {e}")
 
 if __name__ == '__main__':
     asyncio.run(main())
