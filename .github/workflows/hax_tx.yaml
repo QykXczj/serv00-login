@@ -1,4 +1,4 @@
-name: Run Login Script
+name: Run HaxTx Script
 
 on:
   workflow_dispatch:
